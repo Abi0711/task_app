@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/testingGit.iml" filepath="$PROJECT_DIR$/testingGit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TaskAppJava.iml" filepath="$PROJECT_DIR$/TaskAppJava.iml" />
     </modules>
   </component>
 </project>
