@@ -1,6 +1,7 @@
 package taskapp;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -10,11 +11,12 @@ import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Main extends Application {
 
-    ArrayList<Label> allTasks = new ArrayList<>();
+    ArrayList<Task> allTasks = new ArrayList<>();
     @Override
     public void start(Stage stage) throws Exception{
         stage.setTitle("Task App");
@@ -32,11 +34,9 @@ public class Main extends Application {
                 txtField.setText(textarea.getText());
                 Task t = new Task(textarea.getText(), txtField);
                 group.getChildren().add(t);
+                allTasks.add(t);
             }
         } );
-//        for (Task t: allTasks) {
-//
-//        }
 
     }
 
@@ -53,15 +53,15 @@ class Task extends Label {
     //String description;
     boolean complete;
     private Label text;
-    double orgSceneX, orgSceneY;
-    double orgTranslateX, orgTranslateY;
     //int deadline or dateDue
 
     Task(String taskName, Label t) {
         this.setLayoutX(300);
         this.setLayoutY(300);
+        Insets o = new Insets(7);
+        CornerRadii c = new CornerRadii(70);
         Border b = new Border((new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                BorderStrokeStyle.SOLID, c, new BorderWidths(2), o)));
 
         this.setBorder(b);
         this.setText(taskName);
