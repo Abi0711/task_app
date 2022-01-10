@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 
@@ -23,16 +24,33 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         stage.setTitle("Task App");
+        ScrollPane root = new ScrollPane();
         HBox topicContainer = new HBox();
+
+        //add horizontal scroll
+        root.setContent(topicContainer);
+        root.setFitToHeight(true);
+        //root.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         Button addTopic = new Button("+ New Topic");
         topicContainer.setAlignment(Pos.CENTER);
         topicContainer.getChildren().add(addTopic);
 
         addTopic.setOnAction(actionEvent ->  {
-            //VBox t1 = Controller.createTopic();
             Topic t1 = new Topic();
-            HBox.setHgrow(t1, Priority.ALWAYS);
-            topicContainer.getChildren().add(0,t1);
+            ScrollPane scroll = new ScrollPane();
+            scroll.setContent(t1);
+            HBox.setHgrow(scroll, Priority.ALWAYS);
+            scroll.setFitToWidth(true);
+            scroll.setMinWidth(300);
+            scroll.setBackground(new Background(new BackgroundFill(Color.WHITE,  new CornerRadii(10.0), new Insets(2))));
+
+            int tempSize = topicContainer.getChildren().size();
+            if(tempSize>2){
+                topicContainer.getChildren().add(tempSize-1,scroll);
+            }
+            else{
+                topicContainer.getChildren().add(0,scroll);
+            }
         });
 
         TextArea textarea = new TextArea();
@@ -41,7 +59,7 @@ public class Main extends Application {
 
 
 
-        Scene scene = new Scene(topicContainer, 640, 480);
+        Scene scene = new Scene(root, 640, 480);
         stage.setScene(scene);
         stage.show();
         textarea.setOnKeyPressed( event -> {
@@ -75,7 +93,7 @@ class Topic extends VBox{
         //TODO set text box font and styling
 
         Task l1 = new Task("Task 1");
-        //VBox.setVgrow(l1, Priority.ALWAYS);
+        VBox.setVgrow(l1, Priority.ALWAYS);
 
         Task l2 = new Task("Task 2");
         Task l3 = new Task("Task 3");
