@@ -1,6 +1,7 @@
 package taskapp;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -26,17 +27,23 @@ public class Main extends Application {
         stage.setTitle("Task App");
         ScrollPane root = new ScrollPane();
         HBox topicContainer = new HBox();
-
+        Scene scene = new Scene(root, 640, 480);
         //add horizontal scroll
         root.setContent(topicContainer);
         root.setFitToHeight(true);
-        //root.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        //add button to create new topics
         Button addTopic = new Button("+ New Topic");
+        addTopic.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE,  new CornerRadii(10.0), new Insets(2))));
+        addTopic.prefHeightProperty().bind(stage.widthProperty());
+        addTopic.setPrefWidth(100);
         topicContainer.setAlignment(Pos.CENTER);
         topicContainer.getChildren().add(addTopic);
 
+        //if the user presses the button for a new topic
         addTopic.setOnAction(actionEvent ->  {
             Topic t1 = new Topic();
+            //add a horizontal scroll to the task
             ScrollPane scroll = new ScrollPane();
             scroll.setContent(t1);
             HBox.setHgrow(scroll, Priority.ALWAYS);
@@ -44,36 +51,13 @@ public class Main extends Application {
             scroll.setMinWidth(300);
             scroll.setBackground(new Background(new BackgroundFill(Color.WHITE,  new CornerRadii(10.0), new Insets(2))));
 
-            int tempSize = topicContainer.getChildren().size();
-            if(tempSize>2){
-                topicContainer.getChildren().add(tempSize-1,scroll);
-            }
-            else{
-                topicContainer.getChildren().add(0,scroll);
-            }
+            //add the new topic to the position before the button
+            topicContainer.getChildren().add(topicContainer.getChildren().size()-1,scroll);
         });
 
-        TextArea textarea = new TextArea();
-        Group group = new Group();
-        group.getChildren().addAll(textarea);
 
-
-
-        Scene scene = new Scene(root, 640, 480);
         stage.setScene(scene);
         stage.show();
-        textarea.setOnKeyPressed( event -> {
-            if( event.getCode() == KeyCode.ENTER ) {
-
-                Label txtField = new Label();
-                txtField.setText(textarea.getText());
-                Task t = new Task(textarea.getText());
-
-                group.getChildren().add(t);
-                allTasks.add(t);
-            }
-        } );
-
     }
 
 
@@ -109,12 +93,11 @@ class Topic extends VBox{
 
         this.getChildren().addAll(l1, l2, l3, l4, l5, addTask);
 
-
         addTask.setOnAction(actionEvent ->  {
             if(!editing){
                 this.getChildren().add(this.getChildren().size()-1,newTask);
                 System.out.println("Can now edit");
-                //TODO set focus to textarea
+                newTask.requestFocus();
             }
             else{
                 System.out.println("Already adding something");
