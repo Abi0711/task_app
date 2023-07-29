@@ -12,7 +12,7 @@ import javafx.scene.text.Font;
 
 class Topic extends VBox {
     //whether the user is editing a textbox currently
-    private boolean editing;
+    private boolean editing = false;
     private TextField newTask;
 
 
@@ -24,37 +24,47 @@ class Topic extends VBox {
                 new Background(new BackgroundFill(Color.WHITE, new CornerRadii(20.0), null))
         );
         newTask.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(20.0), BorderWidths.DEFAULT)));
-
-        Task l1 = new Task("Task 1");
-        VBox.setVgrow(l1, Priority.ALWAYS);
+        VBox.setVgrow(newTask, Priority.ALWAYS);
 
         Button addTask = new Button("+");
-
         addTask.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,  new CornerRadii(10.0), new Insets(2))));
         addTask.setAlignment(Pos.CENTER);
         addTask.setMaxWidth(Double.MAX_VALUE);
         addTask.setFont(Font.font("Arial", 20));
 
-        this.getChildren().addAll(l1, addTask);
+        this.getChildren().addAll(newTask, addTask);
+        //Hint text
+        newTask.setPromptText("Enter topic name");
+        newTask.getParent().requestFocus();
+        editing = true;
+
         //add a new task if not already editing
         addTask.setOnAction(actionEvent ->  {
             if(!editing){
                 this.getChildren().add(this.getChildren().size()-1,newTask);
                 System.out.println("Can now edit");
-                newTask.requestFocus();
+                newTask.setPromptText("Enter task name");
+                newTask.getParent().requestFocus();
+                editing = true;
             } else{
-                System.out.println("jo");
+                //TODO if already editing highlight text box that is being edited
+                System.out.println("editing");
             }
         });
         //
         newTask.setOnKeyPressed( event -> {
             if( event.getCode() == KeyCode.ENTER ) {
                 Task temp = new Task(newTask.getText());
+                if(this.getChildren().size()==2){
+                    temp.setColour(Color.BLACK);
+                }
+
                 this.getChildren().remove(newTask);
                 this.getChildren().add(this.getChildren().size()-1,temp);
                 newTask.setText("");
                 editing = false;
             }
         } );
+
     }
 }

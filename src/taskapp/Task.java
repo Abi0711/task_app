@@ -24,6 +24,8 @@ class Task extends Label {
     Task(String taskName) {
         this.setAlignment(Pos.CENTER);
         this.setBackground(new Background(new BackgroundFill(Color.ROYALBLUE, new CornerRadii(5.0), new Insets(5))));
+        //TODO add padding to task - letters with tail e.g. p,g,j overflow out of task box
+
         this.setMaxWidth(Double.MAX_VALUE);
         this.setText(taskName);
         this.setFont(Font.font("Arial", 30));
@@ -52,5 +54,9 @@ class Task extends Label {
             mousey = event.getSceneY();
         });
         this.toFront();
+    }
+
+    public void setColour(Color color){
+        this.setBackground(new Background(new BackgroundFill(color, new CornerRadii(5.0), new Insets(5))));
     }
 }
